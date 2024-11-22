@@ -17,8 +17,9 @@ JobNode* read_file(char* file_name)
         return NULL;
     }
 
-    JobNode* dummy = create_node((Job){"", 0, 0});
+    JobNode* dummy = (JobNode*)create_node((Job){"", 0, 0});
     JobNode* traveler = dummy;
+//    traveler->next = dummy;
 
     // Read each line from the file
     while (fgets(line, sizeof(line), file) != NULL)
@@ -26,7 +27,7 @@ JobNode* read_file(char* file_name)
         Job temp_job;
 
         // Parse the line into a Job struct
-        if (sscanf(line, "%14s %d %d", temp_job.task_name, &temp_job.priority, &temp_job.cpu_burst) != 3)
+        if (sscanf(line, "%50s %d %d", temp_job.task_name, &temp_job.priority, &temp_job.cpu_burst) != 3)
         {
             fprintf(stderr, "Error parsing line: %s", line);
             continue;
@@ -38,6 +39,8 @@ JobNode* read_file(char* file_name)
 
     //TODO: Does head changes. I enabled in code. Deal with it.
 
+//    traveler->next = dummy->next;
+//    dummy->next->previous = traveler;
     traveler = dummy->next;
     free(dummy);
 

@@ -3,10 +3,10 @@ CC = gcc
 CFLAGS = -Wall -Wextra -std=c11
 
 # Source Files
-SRC = job_input.c job.c simulator.c schedule.c
+SRC = job_input.c job.c simulator.c cpu_schedule.c
 
 # Object Files
-OBJ = job_input.o job.o simulator.o schedule.o
+OBJ = job_input.o job.o simulator.o cpu_schedule.o
 
 # Output Executable
 OUTPUT = schedule.o
@@ -28,8 +28,8 @@ job.o: job.c job.h
 simulator.o: simulator.c simulator.h job.h
 	$(CC) $(CFLAGS) -c simulator.c
 
-schedule.o: schedule.c job.h job_input.h simulator.h
-	$(CC) $(CFLAGS) -c schedule.c
+cpu_schedule.o: cpu_schedule.c job_input.h simulator.h
+	$(CC) $(CFLAGS) -c cpu_schedule.c
 
 # Clean Rule
 clean:

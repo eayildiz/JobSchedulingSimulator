@@ -1,9 +1,7 @@
 #include <stdio.h>
-#include "job.h"
+#include <string.h>
 #include "job_input.h"
 #include "simulator.h"
-
-#define MAX_TASK_NAME_LENGTH 15
 
 int main(int argc, char* argv[])
 {
@@ -32,7 +30,7 @@ int main(int argc, char* argv[])
     JobNode* job_list = read_file(argv[1]);
 
     // Display the jobs (for verification purposes)
-    display_jobs(job_list);
+    display_job_list(job_list);
 
     // Call the appropriate scheduling algorithm
     if (strcmp(algorithm, "SJF") == 0)
@@ -47,9 +45,6 @@ int main(int argc, char* argv[])
     {
         run_simulator(job_list, ROUNDROBINPRIORITY);
     }
-
-    // Free the job list
-    free_job_list(job_list);
 
     return 0;
 }

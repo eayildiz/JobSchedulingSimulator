@@ -1,9 +1,9 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "job.h"
 
-JobNode* create_node(Job job);
 result_list* create_result_node(const char* job_name);
 bool is_smaller(int a, int b);
 JobNode* update_head(JobNode* traveler, Job job);
@@ -12,12 +12,15 @@ void update_body(JobNode* traveler, Job job);
 //TODO: Can be an array.
 JobNode* form_job_queue(JobNode* head, JobNode* (*adding_strategy)(JobNode* , Job))
 {
+    printf("Flag_form_queue\n");
     JobNode* new_head = create_node(head->job);
 
     // Traverse the original list and insert each node into the sorted list
     JobNode* current = head->next;
     while (current != NULL) {
+        printf("Flag_strategy_before\n");
         new_head = adding_strategy(new_head, current->job);
+        printf("Flag_strategy_after\n");
         current = current->next;
     }
 
@@ -77,6 +80,11 @@ JobNode* add_by_priority(JobNode* traveler, Job job)
             traveler = traveler->next;
         }
         update_body(traveler, job);
+        if(traveler->next->next == NULL)
+        {
+            traveler->next->next = head;
+            head->previous = traveler->next->next;
+        }
         return head;
     }
 }
@@ -94,6 +102,7 @@ JobNode* add_by_cpu_burst(JobNode* traveler, Job job)
     //Check first given node.
     if(is_smaller(job.cpu_burst, traveler->job.cpu_burst))
     {
+        printf("Flag_adding_head\n");
         return update_head(traveler, job);
     }
     else
@@ -103,6 +112,7 @@ JobNode* add_by_cpu_burst(JobNode* traveler, Job job)
         {
             traveler = traveler->next;
         }
+        printf("Flag_adding_body\n");
         update_body(traveler, job);
         return head;
     }
@@ -111,7 +121,10 @@ JobNode* add_by_cpu_burst(JobNode* traveler, Job job)
 JobNode* add_by_tail(JobNode* tail, Job job)
 {
     JobNode* new_node = create_node(job);
+//    JobNode* head = tail->next;
     tail->next = new_node;
+//    new_node->next = head;
+//    head->previous = new_node;
     return new_node;
 }
 
@@ -167,7 +180,8 @@ void update_body(JobNode* traveler, Job job)
     traveler->next = new_node;
     new_node->next = temp;
     new_node->previous = traveler;
-    temp->previous = new_node;
+    if(temp != NULL)
+        temp->previous = new_node;
 }
 
 // Function to display the linked list
@@ -185,7 +199,10 @@ void display_job_list(JobNode* head)
 
 void display_result_list(result_list* head)
 {
+    printf("Flag_display_result_list_1\n");
+
     result_list* current = head;
+    printf("Flag_display_result_list_2\n");
     while (current != NULL)
     {
         printf("%s -> [", current->job_name);
