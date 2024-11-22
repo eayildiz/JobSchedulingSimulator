@@ -31,3 +31,5 @@ JobNode* add_by_priority(JobNode* traveler, Job job);
 JobNode* add_by_cpu_burst(JobNode* traveler, Job job);
 JobNode* add_by_tail(JobNode* tail, Job job);
 result_list* form_result_list(JobNode* head);
+void display_job_list(JobNode* head);
+void display_result_list(result_list* head);

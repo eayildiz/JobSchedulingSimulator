@@ -169,3 +169,35 @@ void update_body(JobNode* traveler, Job job)
     new_node->previous = traveler;
     temp->previous = new_node;
 }
+
+// Function to display the linked list
+void display_job_list(JobNode* head)
+{
+    JobNode* traveler = head;
+    printf("\nJobs in the linked list:\n");
+    while (traveler != NULL)
+    {
+        printf("Task Name: %s, Priority: %d, CPU Burst: %d\n",
+               traveler->job.task_name, traveler->job.priority, traveler->job.cpu_burst);
+        traveler = traveler->next;
+    }
+}
+
+void display_result_list(result_list* head)
+{
+    result_list* current = head;
+    while (current != NULL)
+    {
+        printf("%s -> [", current->job_name);
+        for (int i = 0; i < current->num_of_intervals; i++)
+        {
+            printf("%d-%d", current->interval[i].starting_time, current->interval[i].ending_time);
+            if (i < current->num_of_intervals - 1)
+            {
+                printf(", ");
+            }
+        }
+        printf("]\n");
+        current = current->next;
+    }
+}
