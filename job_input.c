@@ -1,42 +1,11 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "job_input.h"
 
 #define MAX_LINE_LENGTH 256 // Maximum length for each line
 
-typedef struct
-{
-    char task_name[15];
-    int priority;
-    int cpu_burst;
-}Job;
-
-typedef struct JobNode
-{
-    Job job;                // Job data
-    struct JobNode* next;   // Pointer to the next node
-}JobNode;
-
-JobNode* create_node(Job job)
-{
-    JobNode* new_node = (JobNode*)malloc(sizeof(JobNode));
-    if (!new_node)
-    {
-        perror("Error allocating memory for new node");
-        exit(EXIT_FAILURE);
-    }
-    new_node->job = job;
-    new_node->next = NULL;
-    return new_node;
-}
-
-JobNode* add_new_job(JobNode* tail, Job job)
-{
-    JobNode* new_node = create_node(job);
-    tail->next = new_node;
-    return new_node;
-}
-
-int read_file(char* file_name, void())
+JobNode* read_file(char* file_name, JobNode* (*adding_strategy)(JobNode* , Job))
 {
     char line[MAX_LINE_LENGTH]; // Buffer for reading each line
 
@@ -45,7 +14,7 @@ int read_file(char* file_name, void())
     if (file == NULL)
     {
         perror("Error opening file");
-        return 1;
+        return NULL;
     }
 
     JobNode* dummy = create_node((Job){"", 0, 0});
@@ -62,10 +31,15 @@ int read_file(char* file_name, void())
             fprintf(stderr, "Error parsing line: %s", line);
             continue;
         }
-        traveler = add_new_job(traveler, temp_job);
+        traveler = adding_strategy(traveler, temp_job);
     }
 
     fclose(file);
 
-    return 0;
+    //TODO: Does head changes. I enabled in code. Deal with it.
+
+    traveler = dummy->next;
+    free(dummy);
+
+    return traveler;
 }
