@@ -124,6 +124,7 @@ JobNode* create_node(Job job)
         exit(EXIT_FAILURE);
     }
     new_node->job = job;
+    new_node->previous = NULL;
     new_node->next = NULL;
     return new_node;
 }
@@ -153,6 +154,7 @@ JobNode* update_head(JobNode* traveler, Job job)
 {
     JobNode* new_node = create_node(job);
     new_node->next = traveler;
+    traveler->previous = new_node;
     return new_node;
 }
 
@@ -164,4 +166,6 @@ void update_body(JobNode* traveler, Job job)
     JobNode* temp = traveler->next;
     traveler->next = new_node;
     new_node->next = temp;
+    new_node->previous = traveler;
+    temp->previous = new_node;
 }

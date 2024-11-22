@@ -14,6 +14,7 @@ typedef struct interval
 typedef struct JobNode
 {
     Job job;                // Job data
+    struct JobNode* previous;   // Pointer to the next node
     struct JobNode* next;   // Pointer to the next node
 }JobNode;
 

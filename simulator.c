@@ -63,9 +63,45 @@ result_list* run_by_SJF(JobNode* queue_head, result_list* result_head)
     return result_head;
 }
 
-result_list* run_by_RR()
+result_list* run_by_RR(JobNode* queue_head, result_list* result_head)
 {
-    
+    int current_time = 0;
+    const int quantum_time = 5;
+    int executed_time;
+    while(queue_head != NULL)
+    {
+        //Run the job quantum time or less unit time and add interval to result.
+        if(queue_head->job.cpu_burst < quantum_time)
+        {
+            executed_time = queue_head->job.cpu_burst;
+        }
+        else
+        {
+            executed_time = quantum_time;
+        }
+        add_interval(queue_head->job.task_name, result_head, current_time, current_time + executed_time);
+
+        //Update time clock.
+        current_time = current_time + executed_time;
+        
+        //Update job cpu burst.
+        queue_head->job.cpu_burst -= executed_time;
+        //Check if job is finished.
+        if(queue_head->job.cpu_burst <= 0)
+        {
+            //Remove current node.
+            JobNode* temp = queue_head;
+            queue_head = queue_head->next;
+            temp->previous->next = queue_head;
+            queue_head->previous = temp->previous;
+            free(temp);
+        }
+        else
+        {
+            queue_head = queue_head->next;
+        }
+    }
+    return result_head;
 }
 
 //TODO: Check if result_head updates.
