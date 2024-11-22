@@ -5,7 +5,7 @@
 
 #define MAX_LINE_LENGTH 256 // Maximum length for each line
 
-JobNode* read_file(char* file_name, JobNode* (*adding_strategy)(JobNode* , Job))
+JobNode* read_file(char* file_name)
 {
     char line[MAX_LINE_LENGTH]; // Buffer for reading each line
 
@@ -31,7 +31,7 @@ JobNode* read_file(char* file_name, JobNode* (*adding_strategy)(JobNode* , Job))
             fprintf(stderr, "Error parsing line: %s", line);
             continue;
         }
-        traveler = adding_strategy(traveler, temp_job);
+        traveler = add_by_tail(traveler, temp_job);
     }
 
     fclose(file);

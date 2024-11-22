@@ -2,13 +2,32 @@
 #include <stdio.h>
 #include "job.h"
 
-void run_simulator(JobNode* head)
+typedef enum cpu_scheduling_algorithm
 {
-    //Create job lists for different algorithms.
-    JobNode* SJF_head = sorted_copy(head, add_by_cpu_burst);
-    JobNode* RRP_head = sorted_copy(head, add_by_priority);
+    SHORTESTJOBFIRST,
+    ROUNDROBIN,
+    ROUNDROBINPRIORITY
+}cpu_scheduling_algorithm;
 
-    //
+void run_simulator(JobNode* head, cpu_scheduling_algorithm algorithm_choice)
+{
+    result_list* result = form_result_list(head);
+
+    //Create job queue and run simulator based on choice.
+    JobNode* job_queue;
+    //TODO: Magic numbers
+    switch (algorithm_choice)
+    {
+    case SHORTESTJOBFIRST:
+        job_queue = form_job_queue(head, add_by_cpu_burst);
+        break;
+    case ROUNDROBIN:
+        job_queue = form_job_queue(head, add_by_tail);
+        break;
+    case ROUNDROBINPRIORITY:
+        job_queue = form_job_queue(head, add_by_priority);
+        break;
+    }
 }
 
 // Function to display the linked list
