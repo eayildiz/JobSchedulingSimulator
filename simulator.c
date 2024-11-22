@@ -1,13 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "job.h"
-
-typedef enum cpu_scheduling_algorithm
-{
-    SHORTESTJOBFIRST,
-    ROUNDROBIN,
-    ROUNDROBINPRIORITY
-}cpu_scheduling_algorithm;
+#include "simulator.h"
 
 JobNode* get_next_job_RRP(JobNode* current_job, JobNode* priority_head);
 void add_interval(char task_name[15], result_list* result_head, int starting_point, int ending_point);
