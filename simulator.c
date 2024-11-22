@@ -113,7 +113,6 @@ result_list* run_by_RRP(JobNode* queue_head, result_list* result_head)
     int executed_time;
     while(queue_head != NULL)
     {
-        display_job_list(queue_head);
         //Run the job quantum time or less unit time and add interval to result.
         if(queue_head->job.cpu_burst < quantum_time)
         {
