@@ -29,9 +29,6 @@ int main(int argc, char* argv[])
     // Read jobs from the file
     JobNode* job_list = read_file(argv[1]);
 
-    // Display the jobs (for verification purposes)
-    display_job_list(job_list);
-
     // Call the appropriate scheduling algorithm
     if (strcmp(algorithm, "SJF") == 0)
     {

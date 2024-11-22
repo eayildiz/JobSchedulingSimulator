@@ -223,6 +223,9 @@ void display_job_list(JobNode* head)
 
 void display_result_list(result_list* head)
 {
+    double waiting_time = 0;
+    double response_time = 0;
+    int num_of_jobs = 0;
 
     result_list* current = head;
     while (current != NULL)
@@ -230,6 +233,18 @@ void display_result_list(result_list* head)
         printf("%s -> [", current->job_name);
         for (int i = 0; i < current->num_of_intervals; i++)
         {
+            //Update waiting time.
+            if(i == 0)
+            {
+                waiting_time += current->interval[i].starting_time;
+                response_time += current->interval[i].starting_time;
+            }
+            else
+            {
+                waiting_time += (current->interval[i].starting_time - current->interval[i - 1].ending_time);
+            }
+
+            //Print.
             printf("%d-%d", current->interval[i].starting_time, current->interval[i].ending_time);
             if (i < current->num_of_intervals - 1)
             {
@@ -237,6 +252,15 @@ void display_result_list(result_list* head)
             }
         }
         printf("]\n");
+
+        num_of_jobs++;
         current = current->next;
     }
+
+    waiting_time = waiting_time / num_of_jobs;
+    response_time = response_time / num_of_jobs;
+
+    printf("---Stats---\n");
+    printf("WT : %lf\n", waiting_time);
+    printf("RT : %lf\n", response_time);
 }
