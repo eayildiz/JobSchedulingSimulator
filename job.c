@@ -106,11 +106,6 @@ JobNode* add_by_priority(JobNode* traveler, Job job)
             traveler = traveler->next;
         }
         update_body(traveler, job);
-        if(traveler->next->next == NULL)
-        {
-            traveler->next->next = head;
-            head->previous = traveler->next->next;
-        }
         return head;
     }
 }
