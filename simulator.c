@@ -26,10 +26,13 @@ void run_simulator(JobNode* head, cpu_scheduling_algorithm algorithm_choice)
         break;
     case ROUNDROBIN:
         job_queue = form_job_queue(head, add_by_tail);
+        printf("Flag_runsim_between\n");
+        display_job_list(job_queue);
         result = (result_list*)run_by_RR(job_queue, result);
         break;
     case ROUNDROBINPRIORITY:
         job_queue = form_job_queue(head, add_by_priority);
+        display_job_list(job_queue);
         result = (result_list*)run_by_RRP(job_queue, result);
         break;
     }
@@ -87,17 +90,31 @@ result_list* run_by_RR(JobNode* queue_head, result_list* result_head)
         //Check if job is finished.
         if(queue_head->job.cpu_burst <= 0)
         {
-            //Remove current node.
-            JobNode* temp = queue_head;
-            temp->previous->next = temp->next;
-            temp->next->previous = temp->previous;
-            queue_head = queue_head->next;
-            free(temp);
+            if(queue_head->next == queue_head)
+            {
+        printf("Flag_rr_next_0\n");
+                free(queue_head);
+                return result_head;
+            }
+            else
+            {
+        printf("Flag_rr_next_1\n");
+                //Remove current node.
+                JobNode* temp = queue_head;
+                temp->previous->next = temp->next;
+        printf("Flag_rr_next_2\n");
+                temp->next->previous = temp->previous;
+                queue_head = queue_head->next;
+                free(temp);
+            }
         }
         else
         {
             queue_head = queue_head->next;
+    printf("Flag_rr_next_3\n");
         }
+    printf("Flag_rr_endofwhile\n");
+        printf("queue_head: %p\n", queue_head);
     }
     return result_head;
 }
