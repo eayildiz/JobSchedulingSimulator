@@ -127,6 +127,8 @@ result_list* run_by_RRP(JobNode* queue_head, result_list* result_head)
     int executed_time;
     while(queue_head != NULL)
     {
+        printf("Flag_RRP_whilestart\n");
+        display_job_list(queue_head);
         //Run the job quantum time or less unit time and add interval to result.
         if(queue_head->job.cpu_burst < quantum_time)
         {
@@ -163,11 +165,19 @@ result_list* run_by_RRP(JobNode* queue_head, result_list* result_head)
                     return result_head;
                 }
             }
-            temp->previous->next = temp->next;
-            temp->next->previous = temp->previous;
+            queue_head->previous->next = queue_head->next;
+        printf("Flag_rrp_update_4_1\n");
+            queue_head->next->previous = queue_head->previous;
+        printf("Flag_rrp_update_4_2\n");
             queue_head = get_next_job_RRP(queue_head, priority_head);
+            if(queue_head == temp)
+            {
+                free(temp);
+                return result_head;
+            }
+        printf("Flag_rrp_update_4_3\n");
             free(temp);
-        printf("Flag_rrp_update_4\n");
+        printf("Flag_rrp_update_4_4\n");
         }
         else
         {
@@ -196,14 +206,21 @@ JobNode* get_next_job_RRP(JobNode* current_job, JobNode* priority_head)
 void add_interval(char task_name[15], result_list* result_head, int starting_point, int ending_point)
 {
     printf("Flag_interval\n");
+        printf("Task name: %s\n", task_name);
     interval new_interval = {starting_point, ending_point};
     while(result_head != NULL && 0 != strcmp(task_name, result_head->job_name))
     {
         result_head = result_head->next;
     }
+    if(result_head == NULL)
+    {
+        printf("Flag_interval_404\n");
+        return;
+    }
 
     if(result_head->num_of_intervals == 0)
     {
+        printf("Flag_interval_0\n");
         result_head->interval = malloc(sizeof(interval));
     }
     else
