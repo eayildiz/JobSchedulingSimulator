@@ -19,7 +19,6 @@ JobNode* read_file(char* file_name)
 
     JobNode* dummy = (JobNode*)create_node((Job){"", 0, 0});
     JobNode* traveler = dummy;
-//    traveler->next = dummy;
 
     // Read each line from the file
     while (fgets(line, sizeof(line), file) != NULL)
@@ -39,8 +38,6 @@ JobNode* read_file(char* file_name)
 
     //TODO: Does head changes. I enabled in code. Deal with it.
 
-//    traveler->next = dummy->next;
-//    dummy->next->previous = traveler;
     traveler = dummy->next;
     free(dummy);
 

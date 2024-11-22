@@ -12,7 +12,6 @@ void update_body(JobNode* traveler, Job job);
 //TODO: Can be an array.
 JobNode* form_job_queue(JobNode* head, JobNode* (*adding_strategy)(JobNode* , Job))
 {
-    printf("Flag_form_queue\n");
     JobNode* new_head = create_node(head->job);
     JobNode* tail = new_head;
 
@@ -22,9 +21,7 @@ JobNode* form_job_queue(JobNode* head, JobNode* (*adding_strategy)(JobNode* , Jo
     {
         while (current != NULL)
         {
-            printf("Flag_strategy_before1\n");
             new_head = adding_strategy(new_head, current->job);
-            printf("Flag_strategy_after1\n");
             current = current->next;
         }
     }
@@ -32,9 +29,7 @@ JobNode* form_job_queue(JobNode* head, JobNode* (*adding_strategy)(JobNode* , Jo
     {
         while (current != NULL)
         {
-            printf("Flag_strategy_before2\n");
             tail = adding_strategy(tail, current->job);
-            printf("Flag_strategy_after2\n");
             current = current->next;
         }
         tail->next = new_head;
@@ -44,9 +39,7 @@ JobNode* form_job_queue(JobNode* head, JobNode* (*adding_strategy)(JobNode* , Jo
     {
         while (current != NULL)
         {
-            printf("Flag_strategy_before3\n");
             new_head = adding_strategy(new_head, current->job);
-            printf("Flag_strategy_after3\n");
             current = current->next;
         }
         while(tail->next != NULL)
@@ -135,7 +128,6 @@ JobNode* add_by_cpu_burst(JobNode* traveler, Job job)
     //Check first given node.
     if(is_smaller(job.cpu_burst, traveler->job.cpu_burst))
     {
-        printf("Flag_adding_head\n");
         return update_head(traveler, job);
     }
     else
@@ -145,7 +137,6 @@ JobNode* add_by_cpu_burst(JobNode* traveler, Job job)
         {
             traveler = traveler->next;
         }
-        printf("Flag_adding_body\n");
         update_body(traveler, job);
         return head;
     }
@@ -154,11 +145,8 @@ JobNode* add_by_cpu_burst(JobNode* traveler, Job job)
 JobNode* add_by_tail(JobNode* tail, Job job)
 {
     JobNode* new_node = create_node(job);
-//    JobNode* head = tail->next;
     tail->next = new_node;
     new_node->previous = tail;
-//    new_node->next = head;
-//    head->previous = new_node;
     return new_node;
 }
 
@@ -235,10 +223,8 @@ void display_job_list(JobNode* head)
 
 void display_result_list(result_list* head)
 {
-    printf("Flag_display_result_list_1\n");
 
     result_list* current = head;
-    printf("Flag_display_result_list_2\n");
     while (current != NULL)
     {
         printf("%s -> [", current->job_name);
