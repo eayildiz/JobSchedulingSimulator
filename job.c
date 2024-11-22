@@ -14,14 +14,47 @@ JobNode* form_job_queue(JobNode* head, JobNode* (*adding_strategy)(JobNode* , Jo
 {
     printf("Flag_form_queue\n");
     JobNode* new_head = create_node(head->job);
+    JobNode* tail = new_head;
 
     // Traverse the original list and insert each node into the sorted list
     JobNode* current = head->next;
-    while (current != NULL) {
-        printf("Flag_strategy_before\n");
-        new_head = adding_strategy(new_head, current->job);
-        printf("Flag_strategy_after\n");
-        current = current->next;
+    if(adding_strategy == add_by_cpu_burst)
+    {
+        while (current != NULL)
+        {
+            printf("Flag_strategy_before1\n");
+            new_head = adding_strategy(new_head, current->job);
+            printf("Flag_strategy_after1\n");
+            current = current->next;
+        }
+    }
+    else if(adding_strategy == add_by_tail)
+    {
+        while (current != NULL)
+        {
+            printf("Flag_strategy_before2\n");
+            tail = adding_strategy(tail, current->job);
+            printf("Flag_strategy_after2\n");
+            current = current->next;
+        }
+        tail->next = new_head;
+        new_head->previous = tail;
+    }
+    else if(adding_strategy == add_by_priority)
+    {
+        while (current != NULL)
+        {
+            printf("Flag_strategy_before1\n");
+            new_head = adding_strategy(new_head, current->job);
+            printf("Flag_strategy_after1\n");
+            current = current->next;
+        }
+        while(tail->next != NULL)
+        {
+            tail = tail->next;
+        }
+        tail->next = new_head;
+        new_head->previous = tail;
     }
 
     return new_head;
