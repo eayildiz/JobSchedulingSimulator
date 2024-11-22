@@ -178,7 +178,6 @@ JobNode* get_next_job_RRP(JobNode* current_job, JobNode* priority_head)
     return current_job;
 }
 
-//TODO: Check if result_head updates.
 void add_interval(char task_name[15], result_list* result_head, int starting_point, int ending_point)
 {
     interval new_interval = {starting_point, ending_point};
@@ -194,11 +193,21 @@ void add_interval(char task_name[15], result_list* result_head, int starting_poi
     if(result_head->num_of_intervals == 0)
     {
         result_head->interval = malloc(sizeof(interval));
+        *(result_head->interval) = new_interval;
+        result_head->num_of_intervals = 1;
     }
     else
     {
-        result_head->interval = realloc(result_head->interval, (result_head->num_of_intervals + 1) * sizeof(interval));
+        //If ending and starting is equal, merge intervals.
+        if((result_head->interval + result_head->num_of_intervals - 1)->ending_time == starting_point)
+        {
+            (result_head->interval + result_head->num_of_intervals - 1)->ending_time = ending_point;
+        }
+        else
+        {
+            result_head->interval = realloc(result_head->interval, (result_head->num_of_intervals + 1) * sizeof(interval));
+            *(result_head->interval + result_head->num_of_intervals) = new_interval;
+            result_head->num_of_intervals += 1;
+        }
     }
-    *(result_head->interval + result_head->num_of_intervals) = new_interval;
-    result_head->num_of_intervals += 1;
 }
