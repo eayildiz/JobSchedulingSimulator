@@ -21,6 +21,7 @@ typedef struct result_list
 {
     char job_name[15];
     interval* interval;
+    int num_of_intervals;
     struct result_list* next;   // Pointer to the next node
 }result_list;
 

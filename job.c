@@ -138,6 +138,7 @@ result_list* create_result_node(const char* job_name)
     strncpy(new_node->job_name, job_name, sizeof(new_node->job_name) - 1);
     new_node->job_name[sizeof(new_node->job_name) - 1] = '\0'; // Ensure null termination
     new_node->interval = NULL;
+    new_node->num_of_intervals = 0;
     new_node->next = NULL;
     return new_node;
 }
